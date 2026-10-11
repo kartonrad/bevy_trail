@@ -5,7 +5,7 @@
 
 use crate::types::{TrailData, TrailHeader, TrailPoint, TrailRenderMode, TrailStyle};
 use bevy::{
-    asset::{embedded_asset, embedded_path, load_embedded_asset},
+    asset::{embedded_asset, load_embedded_asset},
     core_pipeline::core_3d::{Opaque3d, Opaque3dBatchSetKey, Opaque3dBinKey, CORE_3D_DEPTH_FORMAT},
     ecs::{
         change_detection::Tick,

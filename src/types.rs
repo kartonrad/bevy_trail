@@ -23,7 +23,9 @@ pub enum TrailProfile {
 
 /// How a trail's pixels blend into the frame. Inserted by [`Trail`] via
 /// `#[require]`; mutate at runtime to switch compositing.
-#[derive(Component, ExtractComponent, Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
+#[derive(
+    Component, ExtractComponent, Clone, Copy, Debug, Default, PartialEq, Eq, Hash, Reflect,
+)]
 pub enum TrailRenderMode {
     /// Overwrites the background; alpha ignored.
     #[default]
@@ -39,7 +41,7 @@ pub enum TrailRenderMode {
 /// A [`Component`] in its own right, extracted straight off the entity, so
 /// mutating it animates the trail with no extra bookkeeping. [`Trail`] inserts a
 /// default via `#[require]`.
-#[derive(Component, ExtractComponent, Clone, Debug, ShaderType)]
+#[derive(Component, ExtractComponent, Clone, Debug, ShaderType, Reflect)]
 pub struct TrailStyle {
     pub start_color: LinearRgba,
     pub end_color: LinearRgba,
@@ -71,7 +73,7 @@ impl TrailStyle {
 }
 
 /// One sample along a trail's path, stored in the GPU ring buffer.
-#[derive(Clone, Debug, ShaderType, Default)]
+#[derive(Clone, Debug, ShaderType, Default, Reflect)]
 pub struct TrailPoint {
     pub position: Vec3,
     /// Seconds since the point was emitted.
@@ -106,7 +108,7 @@ pub struct TrailPoint {
 /// ));
 /// # }
 /// ```
-#[derive(Component, Clone, Debug)]
+#[derive(Component, Clone, Debug, Reflect)]
 #[require(Transform, TrailStyle, TrailRenderMode)]
 pub struct Trail {
     /// Maximum number of points retained in the ring buffer.
@@ -151,7 +153,7 @@ impl Trail {
 
 /// Header uniform describing the live segment of the ring buffer. Maintained by
 /// the plugin; not constructed by users directly.
-#[derive(Clone, Debug, ShaderType)]
+#[derive(Clone, Debug, ShaderType, Reflect)]
 pub struct TrailHeader {
     /// Index of the next point to be overwritten
     pub head: u32,
@@ -201,7 +203,7 @@ impl Default for TrailHeader {
 ///
 /// [`new`]: Self::new
 /// [`from_points`]: Self::from_points
-#[derive(Clone, Component)]
+#[derive(Clone, Component, Reflect)]
 #[require(TrailStyle, TrailRenderMode)]
 pub struct TrailData {
     pub header: TrailHeader,

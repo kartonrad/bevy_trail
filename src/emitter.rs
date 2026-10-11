@@ -18,7 +18,7 @@ use crate::types::{Trail, TrailData, TrailHeader, TrailPoint};
 /// commands.spawn((Transform::default(), TrailEmitter::default()));
 /// # }
 /// ```
-#[derive(Component, Default)]
+#[derive(Component, Default, Reflect)]
 #[require(Trail)]
 pub struct TrailEmitter {
     pub last: Option<TrailPoint>,

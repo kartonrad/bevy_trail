@@ -36,9 +36,9 @@ pub mod types;
 use bevy::prelude::*;
 
 use crate::{
-    emitter::emit_points_system,
+    emitter::{emit_points_system, TrailEmitter},
     render::TrailRenderPlugin,
-    types::{Trail, TrailData},
+    types::{Trail, TrailData, TrailRenderMode, TrailStyle},
 };
 
 pub mod prelude {
@@ -63,7 +63,12 @@ pub struct TrailPlugin;
 
 impl Plugin for TrailPlugin {
     fn build(&self, app: &mut App) {
-        app.add_plugins(TrailRenderPlugin)
+        app.register_type::<Trail>()
+            .register_type::<TrailStyle>()
+            .register_type::<TrailEmitter>()
+            .register_type::<TrailRenderMode>()
+            .register_type::<TrailData>()
+            .add_plugins(TrailRenderPlugin)
             .configure_sets(Update, (TrailSystems::Init, TrailSystems::Emit).chain())
             .add_systems(
                 Update,
@@ -79,8 +84,10 @@ impl Plugin for TrailPlugin {
 /// here — the renderer packs all trails into shared buffers each frame.
 fn init_trails(mut commands: Commands, query: Query<(Entity, &Trail), Without<TrailData>>) {
     for (entity, trail) in &query {
-        commands
-            .entity(entity)
-            .insert(TrailData::new(trail.capacity, trail.max_length, trail.max_time));
+        commands.entity(entity).insert(TrailData::new(
+            trail.capacity,
+            trail.max_length,
+            trail.max_time,
+        ));
     }
 }
