@@ -13,11 +13,7 @@ use bevy::{
         visibility::{self, VisibilityClass},
     },
     core_pipeline::core_3d::{Opaque3d, Opaque3dBatchSetKey, Opaque3dBinKey, CORE_3D_DEPTH_FORMAT},
-    ecs::{
-        change_detection::Tick,
-        query::ROQueryItem,
-        system::SystemParamItem,
-    },
+    ecs::{change_detection::Tick, query::ROQueryItem, system::SystemParamItem},
     mesh::PrimitiveTopology,
     prelude::*,
     render::{

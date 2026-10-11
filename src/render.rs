@@ -5,6 +5,7 @@
 
 use crate::types::{TrailData, TrailHeader, TrailPoint, TrailRenderMode, TrailStyle};
 use bevy::{
+    asset::{embedded_asset, embedded_path, load_embedded_asset},
     core_pipeline::core_3d::{Opaque3d, Opaque3dBatchSetKey, Opaque3dBinKey, CORE_3D_DEPTH_FORMAT},
     ecs::{
         change_detection::Tick,
@@ -365,6 +366,8 @@ pub struct TrailRenderPlugin;
 
 impl Plugin for TrailRenderPlugin {
     fn build(&self, app: &mut App) {
+        embedded_asset!(app, "src/", "shaders/trail_drawing.wgsl");
+
         // Main World
         app.add_plugins((
             ExtractComponentPlugin::<TrailData>::default(),
@@ -492,8 +495,7 @@ struct TrailPipeline {
 
 impl FromWorld for TrailPipeline {
     fn from_world(world: &mut World) -> Self {
-        let asset_server = world.resource::<AssetServer>();
-        let shader = asset_server.load("shaders/trail_drawing.wgsl");
+        let shader = load_embedded_asset!(world, "shaders/trail_drawing.wgsl");
 
         let view_layout = BindGroupLayoutDescriptor::new(
             "trail_view_layout",
