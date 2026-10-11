@@ -39,7 +39,7 @@ const INITIAL_PROFILE: TrailProfile = TrailProfile::Smooth;
 
 fn main() {
     App::new()
-        .add_plugins((DefaultPlugins, FeathersPlugins, TrailPlugin))
+        .add_plugins((DefaultPlugins, FeathersPlugins, Trail3dPlugin))
         .insert_resource(UiTheme(create_dark_theme()))
         .insert_resource(ClearColor(Color::srgb(0.02, 0.02, 0.04)))
         .add_systems(Startup, (setup, setup_ui))

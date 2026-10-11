@@ -37,7 +37,7 @@ use bevy::prelude::*;
 
 use crate::{
     emitter::{emit_points_system, TrailEmitter},
-    render::TrailRenderPlugin,
+    render::{TrailRender2dPlugin, TrailRender3dPlugin},
     types::{Trail, TrailData, TrailRenderMode, TrailStyle},
 };
 
@@ -45,7 +45,7 @@ pub mod prelude {
     pub use crate::{
         emitter::TrailEmitter,
         types::{Trail, TrailPoint, TrailProfile, TrailRenderMode, TrailStyle},
-        TrailPlugin,
+        Trail2dPlugin, Trail3dPlugin,
     };
 }
 
@@ -59,16 +59,38 @@ pub enum TrailSystems {
 }
 
 /// Wires up trail emission, state upkeep, and the batched render pipeline.
-pub struct TrailPlugin;
+pub struct Trail3dPlugin;
 
-impl Plugin for TrailPlugin {
+impl Plugin for Trail3dPlugin {
     fn build(&self, app: &mut App) {
         app.register_type::<Trail>()
             .register_type::<TrailStyle>()
             .register_type::<TrailEmitter>()
             .register_type::<TrailRenderMode>()
             .register_type::<TrailData>()
-            .add_plugins(TrailRenderPlugin)
+            .add_plugins(TrailRender3dPlugin)
+            .configure_sets(Update, (TrailSystems::Init, TrailSystems::Emit).chain())
+            .add_systems(
+                Update,
+                (
+                    init_trails.in_set(TrailSystems::Init),
+                    emit_points_system.in_set(TrailSystems::Emit),
+                ),
+            );
+    }
+}
+
+/// Wires up trail emission, state upkeep, and the batched render pipeline.
+pub struct Trail2dPlugin;
+
+impl Plugin for Trail2dPlugin {
+    fn build(&self, app: &mut App) {
+        app.register_type::<Trail>()
+            .register_type::<TrailStyle>()
+            .register_type::<TrailEmitter>()
+            .register_type::<TrailRenderMode>()
+            .register_type::<TrailData>()
+            .add_plugins(TrailRender2dPlugin)
             .configure_sets(Update, (TrailSystems::Init, TrailSystems::Emit).chain())
             .add_systems(
                 Update,

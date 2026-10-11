@@ -39,19 +39,17 @@ fn main() {
         .unwrap_or(100);
 
     App::new()
-        .add_plugins(
-            DefaultPlugins.set(WindowPlugin {
-                primary_window: Some(Window {
-                    // Disable vsync so we measure actual CPU/GPU throughput, not
-                    // the display refresh rate.
-                    present_mode: PresentMode::AutoNoVsync,
-                    title: format!("bevy_trail stress: {count} trails"),
-                    ..default()
-                }),
+        .add_plugins(DefaultPlugins.set(WindowPlugin {
+            primary_window: Some(Window {
+                // Disable vsync so we measure actual CPU/GPU throughput, not
+                // the display refresh rate.
+                present_mode: PresentMode::AutoNoVsync,
+                title: format!("bevy_trail stress: {count} trails"),
                 ..default()
             }),
-        )
-        .add_plugins((FrameTimeDiagnosticsPlugin::default(), TrailPlugin))
+            ..default()
+        }))
+        .add_plugins((FrameTimeDiagnosticsPlugin::default(), Trail3dPlugin))
         .insert_resource(TrailCount(count))
         .insert_resource(Bench {
             warmup: 2.0,

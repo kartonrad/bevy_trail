@@ -19,7 +19,7 @@ struct FrameCount(u32);
 
 fn main() {
     App::new()
-        .add_plugins((DefaultPlugins, TrailPlugin))
+        .add_plugins((DefaultPlugins, Trail3dPlugin))
         .insert_resource(FrameCount(0))
         .add_systems(Startup, setup)
         .add_systems(Update, (move_trails, capture))

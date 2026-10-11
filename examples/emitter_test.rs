@@ -9,7 +9,7 @@ struct CircleMover {
 
 fn main() {
     App::new()
-        .add_plugins((DefaultPlugins, TrailPlugin))
+        .add_plugins((DefaultPlugins, Trail3dPlugin))
         .add_systems(Startup, setup)
         .add_systems(Update, move_in_circle_system)
         .run();

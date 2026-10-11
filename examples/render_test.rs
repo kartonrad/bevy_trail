@@ -11,12 +11,12 @@ use std::f32::consts::TAU;
 use bevy::prelude::*;
 use bevy_trail::{
     types::{TrailData, TrailPoint, TrailStyle},
-    TrailPlugin,
+    Trail3dPlugin,
 };
 
 fn main() {
     let mut app = App::new();
-    app.add_plugins((DefaultPlugins, TrailPlugin))
+    app.add_plugins((DefaultPlugins, Trail3dPlugin))
         .add_systems(Startup, setup);
     app.run();
 }
